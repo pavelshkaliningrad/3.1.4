@@ -49,7 +49,7 @@ public class UserService implements UserDetailsService {
             return false;
         }
 
-        user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
+        user.setRoles(user.getRoles());
         user.setPassword(user.getPassword());
         userRepository.save(user);
         return true;

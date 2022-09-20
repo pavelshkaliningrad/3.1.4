@@ -21,6 +21,15 @@
         <label for="lastName_post">Password: </label>
         <input type="text" th:field="*{password}"  id="lastName_post"/>
         <br/>
+        <select th:field="*{roles}" multiple="multiple">
+            <option
+                    th:field="*{roles}"
+                    th:each="role,roleStat : ${allRoles}"
+                    th:value="${role.getId()}"
+                    th:text="${#strings.substring(role.getName(),5,#strings.length(role.getName()))} + (${roleStat.last}?'':' ') "
+            >
+            </option>
+        </select>
         <input type="submit" value="create">
     </form>
 </div>
@@ -63,8 +72,10 @@
             <td th:text="${msg.getId()}"></td>
             <td th:text="${msg.getUsername()}"></td>
             <td th:text="${msg.getPassword()}"></td>
-            <td th:each="msg1 : ${msg.getRoles()}">
-                <th:block th:text="${msg1.getName()} ">
+            <td>
+                <th:block th:each="msg1,mg1Stat :${msg.getRoles()}">
+                    <th:div th:text="${#strings.substring(msg1.getName(),5,#strings.length(msg1.getName()))} + (${mg1Stat.last}?'':' ') ">
+                    </th:div>
                 </th:block>
             </td>
         </tr>

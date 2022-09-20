@@ -4,17 +4,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.kata.spring.boot_security.demo.dao.RoleRepository;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 @Controller
 public class AdminController {
     @Autowired
     UserService userService;
+    @Autowired
+    RoleService roleService;
     @GetMapping("/admin")
     public String getAllUsers(Model model) {
         model.addAttribute("messages", userService.usergtList(0L));
         model.addAttribute("user", new User());
+        model.addAttribute("allRoles", roleService.getAllRole());
         return  "admin";
     }
     @PostMapping("/save")

@@ -16,10 +16,12 @@
             <td th:text="${msg.getId()}"></td>
             <td th:text="${msg.getUsername()}"></td>
             <td th:text="${msg.getPassword()}"></td>
-                <td th:each="msg1 : ${msg.getRoles()}">
-                    <th:block th:text="${msg1.getName()} ">
-                    </th:block>
-                </td>
+            <td>
+                <th:block th:each="msg1,mg1Stat :${msg.getRoles()}">
+                    <th:div th:text="${#strings.substring(msg1.getName(),5,#strings.length(msg1.getName()))} + (${mg1Stat.last}?'':' ') ">
+                    </th:div>
+                </th:block>
+            </td>
         </tr>
     </th:block>
 </table>
