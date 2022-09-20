@@ -18,8 +18,6 @@ import java.util.Optional;
 
 @Service
 public class RoleService {
-    @PersistenceContext
-    private EntityManager em;
     @Autowired
     RoleRepository roleRepository;
     public List<Role> getAllRole () {

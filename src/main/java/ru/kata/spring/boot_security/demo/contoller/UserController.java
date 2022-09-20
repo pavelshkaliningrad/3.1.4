@@ -13,7 +13,7 @@ public class UserController {
     UserService userService;
     @GetMapping("/user")
     public String getAllUsers(Model model) {
-        model.addAttribute("messages", userService.usergtList(0L));
+        model.addAttribute("messages", userService.usergtList());
         model.addAttribute("user", new User());
         return  "user";
     }

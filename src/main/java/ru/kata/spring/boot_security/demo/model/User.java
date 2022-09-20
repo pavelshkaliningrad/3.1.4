@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Set;
 
 @Entity
+@NamedEntityGraph(name = "graphRole", attributeNodes = @NamedAttributeNode("roles"))
 @Table(name = "users")
 public class User implements UserDetails {
     @Id
@@ -19,7 +20,7 @@ public class User implements UserDetails {
 
     @Transient
     private String passwordConfirm;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     private Set<Role> roles;
 
     public User() {

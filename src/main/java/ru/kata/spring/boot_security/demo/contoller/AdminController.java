@@ -17,7 +17,7 @@ public class AdminController {
     RoleService roleService;
     @GetMapping("/admin")
     public String getAllUsers(Model model) {
-        model.addAttribute("messages", userService.usergtList(0L));
+        model.addAttribute("messages", userService.usergtList());
         model.addAttribute("user", new User());
         model.addAttribute("allRoles", roleService.getAllRole());
         return  "admin";
