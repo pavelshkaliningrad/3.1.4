@@ -34,13 +34,15 @@ protected void configure(HttpSecurity httpSecurity) throws Exception {
             .authorizeRequests()
             .antMatchers("/admin/**").hasRole("ADMIN")
             .antMatchers("/user").hasAnyRole("USER","ADMIN")
-            .antMatchers("/", "/index").permitAll()
+            .antMatchers("/").permitAll()
             .anyRequest().authenticated()
             .and()
             .formLogin().successHandler(successUserHandler)
             .permitAll()
             .and()
             .logout()
+            .logoutUrl("/logout")
+            .logoutSuccessUrl("/login")
             .permitAll();
 }
 

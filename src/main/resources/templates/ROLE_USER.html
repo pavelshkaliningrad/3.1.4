@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>$Title$</title>
+</head>
+<body>
+<div id="Table">
+    <div class="m-4">
+    <h1>User information-page</h1>
+    <div class="bg-white" id="myTabContent">
+        <div class="border rounded-1 ">
+            <h5 class="border border-top-0 bg-light p-3">About user</h5>
+            <div class="p-3">
+                <table class="table table-striped border-top">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">Age</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Role</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <th:block th:each="msg : ${messages}">
+                        <tr>
+                            <td th:text="${msg.getId}"></td>
+                            <td th:text="${msg.getFirstName()}"></td>
+                            <td th:text="${msg.getLastName()}"></td>
+                            <td th:text="${msg.getAge()}"></td>
+                            <td th:text="${msg.getUsername()}"></td>
+                            <td>
+                                <th:block th:each="msg1,mg1Stat :${msg.getRoles()}">
+                                    <th:div th:text="${#strings.substring(msg1.getName(),5,#strings.length(msg1.getName()))} + (${mg1Stat.last}?'':' ') ">
+                                    </th:div>
+                                </th:block>
+                            </td>
+                        </tr>
+                    </th:block>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+</div>
+    </div>
+</div>
+</body>
+</html>

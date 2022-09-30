@@ -15,6 +15,6 @@ public class UserController {
     public String getAllUsers(Model model) {
         model.addAttribute("messages", userService.usergtList());
         model.addAttribute("user", new User());
-        return  "user";
+        return "MainPanel";
     }
 }

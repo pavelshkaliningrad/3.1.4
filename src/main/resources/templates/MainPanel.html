@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Task3.1.3</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+<body>
+<div class="row bg-dark bg-gradient text-white py-3">
+    <div class="col">
+        <b><span class="ms-3" sec:authentication="name"></span></b>
+        <span>with roles:</span>
+        <th:block th:each="r, iter:${#authentication.getAuthorities()}">
+            <span th:text=" ${r.authority.substring(5,#strings.length(r.authority))}"></span>
+            <th:block th:if="${!iter.last}"> </th:block>
+        </th:block>
+        </div>
+    <div class="col text-end">
+        <a class="text-muted me-3 text-decoration-none" th:href="@{/logout}">Logout</a>
+    </div>
+    <div>
+
+    </div>
+</div>
+<div class="row g-0">
+    <div class="col-2">
+        <div class="list-group pt-3" id="list-tab" role="tablist">
+            <th:block th:each="r, iter:${#authentication.getAuthorities()}">
+                <a th:class="${iter.first} ? 'list-group-item list-group-item-action me-3 active border-0 rounded-1':'list-group-item list-group-item-action me-3 border-0 rounded-1'" th:id="'list-'+${r.authority}+'-list'" data-bs-toggle="list" th:href="'#list-'+${r.authority}" role="tab" th:aria-controls="'list-'+${r.authority}" th:text="${#strings.capitalize(#strings.toLowerCase(r.authority.substring(5,#strings.length(r.authority))))}"></a>
+                <th:block th:if="${!iter.last}"> </th:block>
+            </th:block>
+        </div>
+    </div>
+    <div class="col-10 bg-light">
+        <div class="tab-content" id="nav-tabContent">
+            <th:block th:each="r, iter:${#authentication.getAuthorities()}">
+                <div th:class="${iter.first} ? 'tab-pane fade show active':'tab-pane fade'" th:id="'list-'+${r.authority}" role="tabpanel" th:aria-labelledby="'list-'+${r.authority}+'-list'"><div th:include="${r.authority} :: #Table"></div></div>
+                <th:block th:if="${!iter.last}"> </th:block>
+            </th:block>
+        </div>
+    </div>
+</div>
+<script>
+    const exampleModal = document.getElementById('exampleModal')
+    exampleModal.addEventListener('show.bs.modal', event => {
+        // Button that triggered the modal
+        const button = event.relatedTarget
+        // Extract info from data-bs-* attributes
+        const getId = button.getAttribute('data-bs-getid')
+        const getFirstName = button.getAttribute('data-bs-getfirstname')
+        const getLastName = button.getAttribute('data-bs-getlastname')
+        const getAge = button.getAttribute('data-bs-getage')
+        const getUsername = button.getAttribute('data-bs-getusername')
+        // If necessary, you could initiate an AJAX request here
+        // and then do the updating in a callback.
+        //
+        // Update the modal's content.
+        //const modalTitle = exampleModal.querySelector('.modal-title')
+        const modalBodyId = exampleModal.querySelector('.modal-body #recipient-id')
+        const modalBodyFirstName = exampleModal.querySelector('.modal-body #recipient-firstname')
+        const modalBodyLastName = exampleModal.querySelector('.modal-body  #recipient-lastName')
+        const modalBodyAge = exampleModal.querySelector('.modal-body #recipient-age')
+        const modalBodyUsername = exampleModal.querySelector('.modal-body #recipient-username')
+        //const modalBodyPassword = exampleModal.querySelector('.modal-body input')
+
+        //modalTitle.textContent = `New message to ${recipient}`
+        modalBodyId.value = getId
+        modalBodyFirstName.value = getFirstName
+        modalBodyLastName.value = getLastName
+        modalBodyAge.value = getAge
+        modalBodyUsername.value = getUsername
+    })
+        // Добавление ролей
+        // let getRole1 = button.getAttribute('data-bs-role1');
+        // let getRole2 = button.getAttribute('data-bs-role2');
+        // const roles = document.getElementById('roles');
+        // roles.innerHTML="";
+        // if (getRole2=='ROLE_ADMIN' || getRole1=='ROLE_ADMIN') {
+        //     let li = document.createElement('option');
+        //     li.setAttribute('value', '1');
+        //     li.innerText = 'Admin';
+        //     roles.appendChild(li);
+        // }
+        // if (getRole1=='ROLE_USER' || getRole2=='ROLE_USER') {
+        //     let li = document.createElement('option');
+        //     li.setAttribute('value','2');
+        //     li.innerText='User';
+        //     roles.appendChild(li);
+        // }
+        const deleteModal = document.getElementById('deleteModal')
+        deleteModal.addEventListener('show.bs.modal', event => {
+            // Button that triggered the modal
+            const deletebutton = event.relatedTarget
+            // Extract info from data-bs-* attributes
+            const deletegetId = deletebutton.getAttribute('data-bs-getid')
+            const getFirstName = deletebutton.getAttribute('data-bs-getfirstname')
+            const getLastName = deletebutton.getAttribute('data-bs-getlastname')
+            const getAge = deletebutton.getAttribute('data-bs-getage')
+            const getUsername = deletebutton.getAttribute('data-bs-getusername')
+            // If necessary, you could initiate an AJAX request here
+            // and then do the updating in a callback.
+            //
+            // Update the modal's content.
+            //const modalTitle = exampleModal.querySelector('.modal-title')
+            const deletemodalBodyId = deleteModal.querySelector('.modal-body #delete-id')
+            const modalBodyFirstName = deleteModal.querySelector('.modal-body #delete-firstname')
+            const modalBodyLastName = deleteModal.querySelector('.modal-body  #delete-lastName')
+            const modalBodyAge = deleteModal.querySelector('.modal-body #delete-age')
+            const modalBodyUsername = deleteModal.querySelector('.modal-body #delete-username')
+            //const modalBodyPassword = exampleModal.querySelector('.modal-body input')
+
+            //modalTitle.textContent = `New message to ${recipient}`
+            deletemodalBodyId.value = deletegetId
+            modalBodyFirstName.value = getFirstName
+            modalBodyLastName.value = getLastName
+            modalBodyAge.value = getAge
+            modalBodyUsername.value = getUsername
+    })
+</script>
+</body>
+</html>

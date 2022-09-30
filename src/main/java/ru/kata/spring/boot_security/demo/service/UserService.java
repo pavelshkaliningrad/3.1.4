@@ -45,9 +45,21 @@ public class UserService implements UserDetailsService {
             return false;
         }
 
-        user.setRoles(user.getRoles());
-        user.setPassword(user.getPassword());
+//        user.setRoles(user.getRoles());
+//        user.setPassword(user.getPassword());
         userRepository.save(user);
+        return true;
+    }
+    public boolean updateUser(User user) {
+        User userFromDB = userRepository.findByUsername(user.getUsername());
+
+        userFromDB.setFirstName(user.getFirstName());
+        userFromDB.setLastName(user.getLastName());
+        userFromDB.setAge(user.getAge());
+        userFromDB.setUsername(user.getUsername());
+        userFromDB.setPassword(user.getPassword());
+        userFromDB.setRoles(user.getRoles());
+        userRepository.save(userFromDB);
         return true;
     }
 
