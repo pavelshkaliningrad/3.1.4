@@ -51,7 +51,7 @@ public class UserService implements UserDetailsService {
         return true;
     }
     public boolean updateUser(User user) {
-        User userFromDB = userRepository.findByUsername(user.getUsername());
+        User userFromDB = userRepository.getById(user.getId());
 
         userFromDB.setFirstName(user.getFirstName());
         userFromDB.setLastName(user.getLastName());

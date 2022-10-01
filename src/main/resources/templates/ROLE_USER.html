@@ -23,22 +23,7 @@
                         <th scope="col">Role</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <th:block th:each="msg : ${messages}">
-                        <tr>
-                            <td th:text="${msg.getId}"></td>
-                            <td th:text="${msg.getFirstName()}"></td>
-                            <td th:text="${msg.getLastName()}"></td>
-                            <td th:text="${msg.getAge()}"></td>
-                            <td th:text="${msg.getUsername()}"></td>
-                            <td>
-                                <th:block th:each="msg1,mg1Stat :${msg.getRoles()}">
-                                    <th:div th:text="${#strings.substring(msg1.getName(),5,#strings.length(msg1.getName()))} + (${mg1Stat.last}?'':' ') ">
-                                    </th:div>
-                                </th:block>
-                            </td>
-                        </tr>
-                    </th:block>
+                    <tbody id="Table_user_users">
                     </tbody>
                 </table>
             </div>

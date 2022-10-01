@@ -43,80 +43,221 @@
     </div>
 </div>
 <script>
+    //Добавляем данные в модальное окно редактирования юзера
     const exampleModal = document.getElementById('exampleModal')
     exampleModal.addEventListener('show.bs.modal', event => {
-        // Button that triggered the modal
         const button = event.relatedTarget
-        // Extract info from data-bs-* attributes
         const getId = button.getAttribute('data-bs-getid')
-        const getFirstName = button.getAttribute('data-bs-getfirstname')
-        const getLastName = button.getAttribute('data-bs-getlastname')
-        const getAge = button.getAttribute('data-bs-getage')
-        const getUsername = button.getAttribute('data-bs-getusername')
-        // If necessary, you could initiate an AJAX request here
-        // and then do the updating in a callback.
-        //
-        // Update the modal's content.
-        //const modalTitle = exampleModal.querySelector('.modal-title')
-        const modalBodyId = exampleModal.querySelector('.modal-body #recipient-id')
-        const modalBodyFirstName = exampleModal.querySelector('.modal-body #recipient-firstname')
-        const modalBodyLastName = exampleModal.querySelector('.modal-body  #recipient-lastName')
-        const modalBodyAge = exampleModal.querySelector('.modal-body #recipient-age')
-        const modalBodyUsername = exampleModal.querySelector('.modal-body #recipient-username')
-        //const modalBodyPassword = exampleModal.querySelector('.modal-body input')
-
-        //modalTitle.textContent = `New message to ${recipient}`
-        modalBodyId.value = getId
-        modalBodyFirstName.value = getFirstName
-        modalBodyLastName.value = getLastName
-        modalBodyAge.value = getAge
-        modalBodyUsername.value = getUsername
-    })
-        // Добавление ролей
-        // let getRole1 = button.getAttribute('data-bs-role1');
-        // let getRole2 = button.getAttribute('data-bs-role2');
-        // const roles = document.getElementById('roles');
-        // roles.innerHTML="";
-        // if (getRole2=='ROLE_ADMIN' || getRole1=='ROLE_ADMIN') {
-        //     let li = document.createElement('option');
-        //     li.setAttribute('value', '1');
-        //     li.innerText = 'Admin';
-        //     roles.appendChild(li);
-        // }
-        // if (getRole1=='ROLE_USER' || getRole2=='ROLE_USER') {
-        //     let li = document.createElement('option');
-        //     li.setAttribute('value','2');
-        //     li.innerText='User';
-        //     roles.appendChild(li);
-        // }
-        const deleteModal = document.getElementById('deleteModal')
-        deleteModal.addEventListener('show.bs.modal', event => {
-            // Button that triggered the modal
-            const deletebutton = event.relatedTarget
-            // Extract info from data-bs-* attributes
-            const deletegetId = deletebutton.getAttribute('data-bs-getid')
-            const getFirstName = deletebutton.getAttribute('data-bs-getfirstname')
-            const getLastName = deletebutton.getAttribute('data-bs-getlastname')
-            const getAge = deletebutton.getAttribute('data-bs-getage')
-            const getUsername = deletebutton.getAttribute('data-bs-getusername')
-            // If necessary, you could initiate an AJAX request here
-            // and then do the updating in a callback.
-            //
-            // Update the modal's content.
-            //const modalTitle = exampleModal.querySelector('.modal-title')
-            const deletemodalBodyId = deleteModal.querySelector('.modal-body #delete-id')
-            const modalBodyFirstName = deleteModal.querySelector('.modal-body #delete-firstname')
-            const modalBodyLastName = deleteModal.querySelector('.modal-body  #delete-lastName')
-            const modalBodyAge = deleteModal.querySelector('.modal-body #delete-age')
-            const modalBodyUsername = deleteModal.querySelector('.modal-body #delete-username')
-            //const modalBodyPassword = exampleModal.querySelector('.modal-body input')
-
-            //modalTitle.textContent = `New message to ${recipient}`
-            deletemodalBodyId.value = deletegetId
+        let user;
+        fetch('http://localhost:8080/api/user/' + getId).then(res =>res.json()).then(data => showStatUser(data) )
+        function showStatUser (data) {
+            const getFirstName = data.firstName;
+            const getLastName = data.lastName
+            const getAge = data.age
+            const getUsername = data.username
+            const modalBodyId = exampleModal.querySelector('.modal-body #recipient-id')
+            const modalBodyFirstName = exampleModal.querySelector('.modal-body #recipient-firstname')
+            const modalBodyLastName = exampleModal.querySelector('.modal-body  #recipient-lastName')
+            const modalBodyAge = exampleModal.querySelector('.modal-body #recipient-age')
+            const modalBodyUsername = exampleModal.querySelector('.modal-body #recipient-username')
+            const modalBodyRoleAdmin = exampleModal.querySelector('#edit-role-admin')
+            const modalBodyRoleUser = exampleModal.querySelector('#edit-role-user')
+            modalBodyId.value = getId
             modalBodyFirstName.value = getFirstName
             modalBodyLastName.value = getLastName
             modalBodyAge.value = getAge
             modalBodyUsername.value = getUsername
+
+            modalBodyRoleAdmin.removeAttribute('selected')
+            modalBodyRoleUser.removeAttribute('selected')
+            for(let i = 0; i < data.roles.length; i++) {
+                if (data.roles[i].name === "ROLE_ADMIN") {
+                    modalBodyRoleAdmin.setAttribute('selected','')
+                }
+                if (data.roles[i].name === "ROLE_USER") {
+                    modalBodyRoleUser.setAttribute('selected','')
+                }
+            }
+        }
+    })
+    //Добавляем данные в модальное окно удаления юзера
+    const deleteModal = document.getElementById('deleteModal')
+    deleteModal.addEventListener('show.bs.modal', event => {
+        const button = event.relatedTarget
+        const getId = button.getAttribute('data-bs-getid')
+        fetch('http://localhost:8080/api/user/' + getId).then(res =>res.json()).then(data => showStatUser(data) )
+        function showStatUser (data) {
+            const getFirstName = data.firstName;
+            const getLastName = data.lastName
+            const getAge = data.age
+            const getUsername = data.username
+            const modalBodyId = deleteModal.querySelector('.modal-body #delete-id')
+            const modalBodyFirstName = deleteModal.querySelector('.modal-body #delete-firstname')
+            const modalBodyLastName = deleteModal.querySelector('.modal-body  #delete-lastName')
+            const modalBodyAge = deleteModal.querySelector('.modal-body #delete-age')
+            const modalBodyUsername = deleteModal.querySelector('.modal-body #delete-username')
+            const modalBodyRoles = deleteModal.querySelector('.modal-body #delete-roles')
+            modalBodyId.value = getId
+            modalBodyFirstName.value = getFirstName
+            modalBodyLastName.value = getLastName
+            modalBodyAge.value = getAge
+            modalBodyUsername.value = getUsername
+            modalBodyRoles.innerHTML=''
+            for(let i = 0; i < data.roles.length; i++) {
+                if (data.roles[i].name === "ROLE_ADMIN") {
+                    let optionAdmin = document.createElement('option')
+                         optionAdmin.innerText = "ADMIN"
+                    modalBodyRoles.appendChild(optionAdmin)
+                }
+                if (data.roles[i].name === "ROLE_USER") {
+                    let optionUser = document.createElement('option')
+                     optionUser.innerText = "USER"
+                    modalBodyRoles.appendChild(optionUser)
+                }
+            }
+        }
+    })
+    window.onload = function() {
+        updateTables ();
+    };
+    // Обновление таблиц
+    function updateTables () {
+        // Вывод таблицы юзера
+        fetch('http://localhost:8080/api/user/').then(res =>res.json()).then(data => tableAdmin(data,"User",'Table_user_users'))
+        // Вывода таблицы админа
+        fetch('http://localhost:8080/api/user/').then(res =>res.json()).then(data => tableAdmin(data,"Admin",'Table_admin_users'))
+    }
+    // Вывод таблицы
+    function tableAdmin(usersAll,role,tableId) {
+        const tableAdminRow = document.getElementById(tableId)
+        tableAdminRow.innerHTML='';
+        for (let i = 0; i < usersAll.length; i++) {
+            // Вывод ролей
+            let roles ="";
+            for (let j = 0; j< usersAll[i].roles.length; j++) {
+                if (usersAll[i].roles[j].name === "ROLE_ADMIN") {
+                    roles += "ADMIN";
+                }
+                if (usersAll[i].roles[j].name === "ROLE_USER") {
+                    roles += "USER";
+                }
+                if (j-1<usersAll[i].roles.length) {
+                    roles +=" ";
+                }
+            }
+            let row = document.createElement('tr');
+            row.innerHTML = '<td>'+usersAll[i].id+'</td><td>'+usersAll[i].firstName+'</td><td>'+usersAll[i].lastName+'</td><td>'+usersAll[i].age+'</td><td>'+usersAll[i].username+'</td><td>'+roles+'</td>';
+            if (role === "Admin") {
+                row.innerHTML += '<td><button  type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-getid="'+usersAll[i].id+'">Edit</button></td><td><button  type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-getid="'+usersAll[i].id+'">Delete</button></td>';
+            }
+            tableAdminRow.appendChild(row);
+        }
+    }
+    /////// ----------Отправка запроса на редактирование
+    // Определяем структуру юзера
+    let UserDTO =  {
+        id:'',
+        firstName:'',
+        lastName:'',
+        age:'',
+        username: '',
+        password: '',
+        roles: []
+
+    }
+    // Получаем элементы формы
+    const editId = document.getElementById('recipient-id');
+    const editFirstName = document.getElementById('recipient-firstname');
+    const editLastName = document.getElementById('recipient-lastName');
+    const editAge = document.getElementById('recipient-age');
+    const editUsername = document.getElementById('recipient-username');
+    const editPassword = document.getElementById('recipient-password');
+
+    const btnEdit = document.getElementById('admin_edit_btn');
+
+    btnEdit.addEventListener('click', async () => {
+        UserDTO.id = editId.value;
+        UserDTO.firstName = editFirstName.value;
+        UserDTO.lastName = editLastName.value;
+        UserDTO.age = editAge.value;
+        UserDTO.username = editUsername.value;
+        UserDTO.password = editPassword.value;
+        UserDTO.roles = getSelectValues(document.getElementById('edit-roles'))
+
+        fetch('http://localhost:8080/api/user/'+editId.value, {
+            method: 'PUT',
+            body: JSON.stringify(UserDTO),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        }).then((res) => updateTables ())
+        document.getElementById('edit-close').click()
+
+    })
+    // Получение value из select
+    function getSelectValues(select) {
+        let result = [];
+        let options = select && select.options;
+        let opt;
+
+        for (let i=0, iLen=options.length; i<iLen; i++) {
+            opt = options[i];
+
+            if (opt.selected) {
+                result.push(opt.value || opt.text);
+            }
+        }
+        return result;
+    }
+    //------------------ Отправка запроса на  удаления Юзера
+    // Получаем элементы формы
+    const deleteId = document.getElementById('delete-id');
+
+    const btnDelete = document.getElementById('delete-btn');
+
+    btnDelete.addEventListener('click', async () => {
+        fetch('http://localhost:8080/api/user/'+deleteId.value, {
+            method: 'DELETE'
+        }).then((res) => updateTables ())
+        document.getElementById('delete-close').click()
+
+    })
+    /////// ----------Отправка запроса на добавления юзера
+    let UserAddDTO =  {
+        id:'',
+        firstName:'',
+        lastName:'',
+        age:'',
+        username: '',
+        password: '',
+        roles: []
+
+    }
+    // Получаем элементы формы
+    const addFirstName = document.getElementById('new-user-firstname');
+    const addLastName = document.getElementById('new-user-lastName');
+    const addAge = document.getElementById('new-user-age');
+    const addUsername = document.getElementById('new-user-username');
+    const addPassword = document.getElementById('new-user-password');
+
+    const btnadd = document.getElementById('add-user-btn');
+
+    btnadd.addEventListener('click', async () => {
+        UserAddDTO.firstName = addFirstName.value;
+        UserAddDTO.lastName = addLastName.value;
+        UserAddDTO.age = addAge.value;
+        UserAddDTO.username = addUsername.value;
+        UserAddDTO.password = addPassword.value;
+        UserAddDTO.roles = getSelectValues(document.getElementById('new-user-roles'))
+
+        fetch('http://localhost:8080/api/user/', {
+            method: 'POST',
+            body: JSON.stringify(UserAddDTO),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        }).then((res) => updateTables ())
+
     })
 </script>
 </body>

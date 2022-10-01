@@ -21,20 +21,4 @@ public class AdminController {
         model.addAttribute("allRoles", roleService.getAllRole());
         return "MainPanel";
     }
-    @PostMapping("/save")
-    public String createUser(@ModelAttribute("user") User user) {
-        userService.saveUser(user);
-        return "redirect:/admin";
-    }
-    @PostMapping("/update")
-    public String updateUser(@ModelAttribute("user") User user) {
-        userService.updateUser(user);
-
-        return "redirect:/admin";
-    }
-    @PostMapping("/delete")
-    public String deleteUser(@RequestParam ("id_patch") Long id) {
-        userService.deleteUser(id);
-        return "redirect:/admin";
-    }
 }
