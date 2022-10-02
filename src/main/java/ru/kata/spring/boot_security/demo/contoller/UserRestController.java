@@ -32,8 +32,8 @@ public class UserRestController {
         User user = userService.findUserById(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
-    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
-    public ResponseEntity<User> updateUser(@RequestBody User user,@PathVariable("id") Long id) {
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    public ResponseEntity<User> updateUser(@RequestBody User user) {
         HttpHeaders headers = new HttpHeaders();
          userService.updateUser(user);
         return new ResponseEntity<>(user, headers,HttpStatus.OK);
@@ -42,7 +42,7 @@ public class UserRestController {
     public ResponseEntity<User> deleteUser(@PathVariable("id") Long id) {
         HttpHeaders headers = new HttpHeaders();
         userService.deleteUser(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<User> saveUser(@RequestBody User user) {

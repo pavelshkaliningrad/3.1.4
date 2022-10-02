@@ -184,7 +184,7 @@
         UserDTO.password = editPassword.value;
         UserDTO.roles = getSelectValues(document.getElementById('edit-roles'))
 
-        fetch('http://localhost:8080/api/user/'+editId.value, {
+        fetch('http://localhost:8080/api/user/', {
             method: 'PUT',
             body: JSON.stringify(UserDTO),
             headers: {
